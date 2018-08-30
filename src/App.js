@@ -1,10 +1,14 @@
 import React from 'react'
+import './styles.css'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const Menu = () => (
-  <div>    
-    <a href='#'>anecdotes</a>&nbsp;
-    <a href='#'>create new</a>&nbsp;
-    <a href='#'>about</a>&nbsp;
+  <div>
+    <div>
+      <Link to='/'>anecdotes</Link>&nbsp;
+      <Link to='/list'>create new</Link>&nbsp;
+      <Link to='/info'>about</Link>&nbsp;
+    </div>
   </div>
 )
 
@@ -62,6 +66,11 @@ class CreateNew extends React.Component {
       info: this.state.info,
       votes: 0
     })
+    this.setState({
+      content: '',
+      author: '',
+      info: ''
+    })
   }
 
   render() {
@@ -70,16 +79,16 @@ class CreateNew extends React.Component {
         <h2>create a new anecdote</h2>
         <form onSubmit={this.handleSubmit}>
           <div>
-            content 
-            <input name='content' value={this.state.content} onChange={this.handleChange} />
+            content: 
+            <input className="input" name='content' value={this.state.content} onChange={this.handleChange} />
           </div>
           <div>
-            author
-            <input name='author' value={this.state.author} onChange={this.handleChange} />
+            author:
+            <input className="input" name='author' value={this.state.author} onChange={this.handleChange} />
           </div>
           <div>
-            url for more info
-            <input name='info' value={this.state.info} onChange={this.handleChange} />
+            url for more info:
+            <input className="input" name='info' value={this.state.info} onChange={this.handleChange} />
           </div> 
           <button>create</button>
         </form>
@@ -139,10 +148,15 @@ class App extends React.Component {
     return (
       <div>
         <h1>Software anecdotes</h1>
+        <div />
+        <Router>
+          <div>
           <Menu />
-          <AnecdoteList anecdotes={this.state.anecdotes} />
-          <About />      
-          <CreateNew addNew={this.addNew}/>
+            <Route exact path='/' render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
+            <Route exact path='/list' render={() => <CreateNew addNew={this.addNew} />}/>
+            <Route exact path='/info' render={() => <About />}/>
+          </div>
+        </Router>
         <Footer />
       </div>
     );
