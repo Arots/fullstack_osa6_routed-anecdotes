@@ -57,8 +57,17 @@ const Footer = () => (
 )
 
 const Notification = ({notification}) => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'Arial',
+    fontSize: 14,
+    border: '2px solid',
+    borderRadius: '15px 50px',
+    display: notification === '' ? 'none' : '',
+    padding: '8px'
+  }
   return (
-    <div className='notification' >
+    <div style={footerStyle} >
       {notification}
     </div>
   )
@@ -184,7 +193,7 @@ class App extends React.Component {
         <Router>
           <div>
           <Menu />
-            {this.state.notification === '' ? <div /> : <Notification notification={this.state.notification} />}
+            <Notification notification={this.state.notification} />
             <Route exact path='/' render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
             <Route exact path='/list' render={() => this.state.redirect ?
               <Redirect to='/' /> : <CreateNew addNew={this.addNew} />}/>
