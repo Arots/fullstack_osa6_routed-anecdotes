@@ -2,3 +2,9 @@
     margin-bottom: 5px;
     margin-left: 5px;
 }
+
+.notification {
+    border: 2px solid;
+    border-radius: 15 50;
+    color: gold;
+}

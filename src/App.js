@@ -1,6 +1,6 @@
 import React from 'react'
 import './styles.css'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 
 const Menu = () => (
   <div>
@@ -9,6 +9,7 @@ const Menu = () => (
       <Link to='/list'>create new</Link>&nbsp;
       <Link to='/info'>about</Link>&nbsp;
     </div>
+    <br />
   </div>
 )
 
@@ -55,13 +56,22 @@ const Footer = () => (
   </div>
 )
 
+const Notification = ({notification}) => {
+  return (
+    <div className='notification' >
+      {notification}
+    </div>
+  )
+}
+
 class CreateNew extends React.Component {
   constructor() {
     super()
     this.state = {
       content: '',
       author: '',
-      info: ''
+      info: '',
+      redirect: false
     }
   }
 
@@ -131,13 +141,23 @@ class App extends React.Component {
           id: '2'
         }
       ],
-      notification: ''
+      notification: '',
+      redirect: false
     } 
   }
 
   addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
-    this.setState({ anecdotes: this.state.anecdotes.concat(anecdote) })
+    this.setState({ 
+      anecdotes: this.state.anecdotes.concat(anecdote),
+      redirect: true,
+      notification: `a new anecdote: ${anecdote.content} created!` })
+    setTimeout(() => {
+      this.setState({
+        notification: '',
+        redirect: false
+      })
+    }, 4000)
   }
 
   anecdoteById = (id) =>
@@ -164,8 +184,10 @@ class App extends React.Component {
         <Router>
           <div>
           <Menu />
+            {this.state.notification === '' ? <div /> : <Notification notification={this.state.notification} />}
             <Route exact path='/' render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
-            <Route exact path='/list' render={() => <CreateNew addNew={this.addNew} />}/>
+            <Route exact path='/list' render={() => this.state.redirect ?
+              <Redirect to='/' /> : <CreateNew addNew={this.addNew} />}/>
             <Route exact path='/info' render={() => <About />}/>
             <Route exact path='/anecdotes/:id' render={({match}) => 
               <Anecdote anecdote={this.anecdoteById(match.params.id)}/> }
