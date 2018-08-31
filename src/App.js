@@ -1,13 +1,40 @@
 import React from 'react'
 import './styles.css'
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink, Redirect } from 'react-router-dom'
 
 const Menu = () => (
   <div>
-    <div>
-      <Link to='/'>anecdotes</Link>&nbsp;
-      <Link to='/list'>create new</Link>&nbsp;
-      <Link to='/info'>about</Link>&nbsp;
+    <div style={{backgroundColor: 'transparent', border: '2px dotted', borderRadius: '12px', padding: '15px' }}>
+      <NavLink 
+         exact to='/'
+        activeStyle={{
+          fontWeight: 'bold',
+          backgroundColor: 'pink',
+          padding: '10px',
+          border: '2px dashed',
+          borderRadius: '15px'
+        }}>
+        anecdotes</NavLink>&nbsp;
+      <NavLink 
+        exact to='/list'
+        activeStyle={{
+          fontWeight: 'bold',
+          backgroundColor: 'pink',
+          padding: '10px',
+          border: '2px dashed',
+          borderRadius: '15px'
+        }}>
+        create new</NavLink>&nbsp;
+      <NavLink 
+        exact to='/info' 
+        activeStyle={{
+          fontWeight: 'bold',
+          backgroundColor: 'pink',
+          padding: '10px',
+          border: '2px dashed',
+          borderRadius: '15px'
+        }}>
+        about</NavLink>&nbsp;
     </div>
     <br />
   </div>
@@ -18,7 +45,7 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map(anecdote => <li key={anecdote.id} >
-      <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
+      <NavLink to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</NavLink></li>)}
     </ul>  
   </div>
 )
